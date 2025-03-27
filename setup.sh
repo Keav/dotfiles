@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Clone dotfiles repository
-git clone <your-github-repo-url> ~/dotfiles
+git clone git@github.com:Keav/dotfiles.git ~/dotfiles
 
 # Create symlinks
 ln -s ~/dotfiles/.zshrc ~/.zshrc

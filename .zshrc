@@ -11,15 +11,26 @@ export CLICOLOR=1
 export LS_COLORS="di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=34;43:su=30;41:sg=30;46:tw=30;42:ow=30;43"
 export LSCOLORS=ExFxBxDxCxegedabagacad
 
-# This makes stderr output bright orange
-exec 2>>(while read line; do
-  print '\e[38;5;208m'${(q)line}'\e[0m' > /dev/stderr; done &)
+# Make error messages bright orange (improved version)
+exec 2> >(
+    while read -r line; do
+        print -P "%F{208}${line}%f" > /dev/stderr
+    done &
+)
 
 # Set PATH
 
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 export PATH="/opt/homebrew/bin:$PATH"
+
+# Start SSH agent and add GitHub key if not already running
+if [ -z "$SSH_AUTH_SOCK" ] ; then
+    eval "$(ssh-agent -s)" > /dev/null
+    ssh-add -q ~/.ssh/github 2>/dev/null || {
+        echo "Warning: Failed to add SSH key. Check if ~/.ssh/github exists"
+    }
+fi
 
 # zshrc reload function
 
@@ -63,7 +74,6 @@ rq () {     # [r]emove [q]uarantine: Remove quarantine extended attributes from 
     ls -lah@  "${1}"
 
 }
-
 
 bz () {     # [b]ackup ~/.[z]shrc: Backup ~/.zshrc
     if [ -z ${1} ]; then
