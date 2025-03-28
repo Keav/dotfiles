@@ -89,32 +89,54 @@ bz () {     # [b]ackup ~/.[z]shrc: Backup ~/.zshrc
 	
 }
 
-# Function to manage dotfiles
-# Usage: dotfiles [push|pull]
+# Function to manage smbfix
+# Usage: smbfix [push|pull]
 # push: Push changes to GitHub
 # pull: Pull changes from GitHub
-# Example: dotfiles push
-# Example: dotfiles pull
+# Example: smbfix push
+# Example: smbfix pull
 # Make sure to set up your GitHub repository and SSH keys before using this function
 
-dotfiles() {
+smbfix() {
     case "$1" in
         "push")
-            cd ~/dotfiles
+            cd ~/smbfix
             git add .
-            git commit -m "Update dotfiles - $(date '+%Y-%m-%d %H:%M:%S')"
+            git commit -m "Update smbfix - $(date '+%Y-%m-%d %H:%M:%S')"
             git push
             cd - > /dev/null
-            echo "Dotfiles pushed to GitHub"
+            echo "smbfix pushed to GitHub"
             ;;
         "pull")
-            cd ~/dotfiles
+            cd ~/smbfix
             git pull
             cd - > /dev/null
-            echo "Dotfiles updated from GitHub"
+            echo "smbfix updated from GitHub"
             ;;
         *)
-            printf "Usage:\ndotfiles push - Push changes to GitHub\ndotfiles pull - Pull changes from GitHub\n"
+            printf "Usage:\nsmbfix push - Push changes to GitHub\nsmbfix pull - Pull changes from GitHub\n"
+            ;;
+    esac
+}
+
+smbfix() {
+    case "$1" in
+        "push")
+            cd ~/smbfix
+            git add .
+            git commit -m "Update smbfix - $(date '+%Y-%m-%d %H:%M:%S')"
+            git push
+            cd - > /dev/null
+            echo "smbfix pushed to GitHub"
+            ;;
+        "pull")
+            cd ~/smbfix
+            git pull
+            cd - > /dev/null
+            echo "smbfix updated from GitHub"
+            ;;
+        *)
+            printf "Usage:\nsmbfix push - Push changes to GitHub\nsmbfix pull - Pull changes from GitHub\n"
             ;;
     esac
 }
