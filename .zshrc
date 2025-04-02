@@ -25,11 +25,9 @@ eval "$(/opt/homebrew/bin/brew shellenv)"
 export PATH="/opt/homebrew/bin:$PATH"
 
 # Start SSH agent and add GitHub key if not already running
-if [ -z "$SSH_AUTH_SOCK" ] ; then
+if [ -z "$SSH_AUTH_SOCK" ] && [ -f "$HOME/.ssh/github" ]; then
     eval "$(ssh-agent -s)" > /dev/null
-    ssh-add -q ~/.ssh/github 2>/dev/null || {
-        echo "Warning: Failed to add SSH key. Check if ~/.ssh/github exists"
-    }
+    ssh-add -q ~/.ssh/github 2>/dev/null
 fi
 
 # zshrc reload function
@@ -43,13 +41,21 @@ function reload() {
 
 source $(brew --prefix zsh-syntax-highlighting)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-autoload -Uz compinit && compinit
+#autoload -Uz compinit && compinit
+# More secure compinit configuration
+autoload -Uz compinit
+if [ "$(whoami)" = "admin" ]; then
+    # Skip the check when running as admin to avoid the warning
+    compinit -C
+else
+    compinit
+fi
+
 
 # Alias section
 
 alias ll="ls -lah"
-alias jrc="sudo jamf recon"
-alias admin="cp -v ~/.zshrc /Users/admin/;su admin"
+alias adm="cp -v ~/.zshrc /Users/admin/ && login admin"
 
 ###
 # Functions
